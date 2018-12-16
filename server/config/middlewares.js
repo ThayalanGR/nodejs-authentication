@@ -11,8 +11,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //check for production
-const isProduction = process.env.NODE_ENV === 'production';
-// console.log(process.env.NODE_ENV);
+// const isProduction = process.env.NODE_ENV === 'production';
 
 //setting up middlewares for express server
 export default (app) => {
@@ -33,32 +32,5 @@ export default (app) => {
         saveUninitialized: false
     }));
 
-    if (!isProduction) {
-        app.use(errorHandler());
-    }
-
-    //Error handlers
-    if (!isProduction) {
-        app.use((err, req, res) => {
-            res.status(err.status || 500);
-
-            res.json({
-                errors: {
-                    message: err.message,
-                    error: err,
-                },
-            });
-        });
-    }
-
-    app.use((err, req, res) => {
-        res.status(err.status || 500);
-
-        res.json({
-            errors: {
-                message: err.message,
-                error: {},
-            },
-        });
-    });
+    
 }
