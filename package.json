@@ -1,0 +1,39 @@
+{
+  "name": "nodejs-authentication",
+  "version": "1.0.0",
+  "description": "nodejs authentication",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThayalanGR/nodejs-authentication.git"
+  },
+  "keywords": [
+    "nodejs",
+    "authentication"
+  ],
+  "author": "ThayalanGR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThayalanGR/nodejs-authentication/issues"
+  },
+  "homepage": "https://github.com/ThayalanGR/nodejs-authentication#readme",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.4.0"
+  },
+  "devDependencies": {
+    "errorhandler": "^1.5.0",
+    "morgan": "^1.9.1"
+  }
+}
