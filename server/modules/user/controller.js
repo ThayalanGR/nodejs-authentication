@@ -1,22 +1,12 @@
-// import mongoose from 'mongoose';
 import passport from 'passport';
-// import {auth} from './auth';
 import Users from './model';
 
-import passports from './passport';
-
-passports();
-
-
-
 export const registerUser = (req, res, next) => {
-  console.log('iamhere')
-  const {
-    body: {
-      user
-    }
-  } = req;
 
+  const user = req.body.user;
+
+
+  //validation user input 
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -24,7 +14,6 @@ export const registerUser = (req, res, next) => {
       },
     });
   }
-
   if (!user.password) {
     return res.status(422).json({
       errors: {
@@ -33,22 +22,24 @@ export const registerUser = (req, res, next) => {
     });
   }
 
+  // initializing the value with schema
   const finalUser = new Users(user);
 
+  //setting password salt and hash
   finalUser.setPassword(user.password);
 
-  return finalUser.save()
-    .then(() => res.json({
-      user: finalUser.toAuthJSON()
-    }));
+
+  finalUser.save()
+    .then(() => {
+      return res.status(201).send({
+        user: finalUser.toAuthJSON()
+      })
+    });
 };
 
 export const loginUser = (req, res, next) => {
-  const {
-    body: {
-      user
-    }
-  } = req;
+  const user = req.body.user;
+
 
   if (!user.email) {
     return res.status(422).json({
@@ -67,36 +58,39 @@ export const loginUser = (req, res, next) => {
   }
 
   return passport.authenticate('local', {
-    session: false
-  }, (err, passportUser, info) => {
-    if (err) {
-      return next(err);
-    }
+      session: false
+    },
+    (err, passportUser, info) => {
+      if (err) {
+        return next(err);
+      }
 
-    if (passportUser) {
-      const user = passportUser;
-      user.token = passportUser.generateJWT();
+      if (passportUser) {
+        const user = passportUser;
+        user.token = passportUser.generateJWT();
 
-      return res.json({
-        user: user.toAuthJSON()
+        return res.json({
+          user: user.toAuthJSON()
+        });
+      }
+      console.log(info)
+      return res.status(400).send({
+        info
       });
-    }
-
-    return status(400).info;
-  })(req, res, next);
+    })(req, res, next);
 };
 
 export const current = (req, res, next) => {
-  const {
-    payload: {
-      id
-    }
-  } = req;
+
+  const id = req.params.id;
+  console.log(id);
 
   return Users.findById(id)
     .then((user) => {
       if (!user) {
-        return res.sendStatus(400);
+        return res.status(400).send({
+          error: true
+        });
       }
 
       return res.json({
